@@ -11,12 +11,6 @@ const overrides = [
             parser: 'json',
         },
     },
-    {
-        files: '.madgerc',
-        options: {
-            parser: 'json',
-        },
-    },
 ];
 
 module.exports = {
@@ -27,7 +21,7 @@ module.exports = {
     insertPragma: false,
     jsxSingleQuote: false,
     overrides,
-    printWidth: 140,
+    printWidth: 150,
     proseWrap: 'preserve',
     quoteProps: 'as-needed',
     requirePragma: false,

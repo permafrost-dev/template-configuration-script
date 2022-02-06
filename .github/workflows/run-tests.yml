@@ -14,7 +14,7 @@ on:
   pull_request:
 
 env:
-  USE_CODECOV_SERVICE: yes
+  USE_CODECOV_SERVICE: no
 
 jobs:
   tests:
