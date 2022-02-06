@@ -6,7 +6,7 @@ const safeUnlink = path => fs.existsSync(path) && fs.unlinkSync(path);
 const getWorkflowFilename = name => `${__dirname}/.github/workflows/${name}.yml`;
 const getGithubConfigFilename = name => `${__dirname}/.github/${name}.yml`;
 
-export class Features {
+export class OptionalFeatures {
     codecov = {
         prompt: 'Use code coverage service codecov?',
         enabled: true,

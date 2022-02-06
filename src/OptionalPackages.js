@@ -1,4 +1,4 @@
-import { runCommand } from './helpers';
+import { runCommand, askQuestion, askBooleanQuestion } from './helpers';
 
 const cp = require('child_process');
 const fs = require('fs');
@@ -73,7 +73,7 @@ export class OptionalPackages {
 
     optionalPackages = [this.config, this.dotenv];
 
-    async run(askQuestion, askBooleanQuestion) {
+    async run() {
         for (let pkg of this.optionalPackages) {
             const result = await askBooleanQuestion(pkg.prompt, pkg.default);
             if (result) {
