@@ -1,4 +1,4 @@
-import { is_dir, is_file } from './FileSystem';
+import { is_dir, is_file } from './helpers';
 import { FileVariableReplacer } from './FileVariableReplacer';
 
 const path = require('path');
