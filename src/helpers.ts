@@ -13,9 +13,14 @@ export const runCommand = str => {
 };
 
 export const gitCommand = command => {
-    return cp.execSync(`git ${command}`, {
-        env: process.env, cwd: __dirname, encoding: 'utf-8', stdio: 'pipe' 
-    }) || '';
+    return (
+        cp.execSync(`git ${command}`, {
+            env: process.env,
+            cwd: __dirname,
+            encoding: 'utf-8',
+            stdio: 'pipe',
+        }) || ''
+    );
 };
 
 export const installDependencies = () => {
@@ -48,7 +53,7 @@ export function is_file(path) {
     return rescue(() => fs.lstatSync(path).isFile(), false);
 }
 
-export const askQuestion = async (prompt, defaultValue = ''): Promise<string | boolean | any> => {
+export const askQuestion = async (prompt, defaultValue = ''): Promise<any> => {
     let result: any = '';
 
     try {
