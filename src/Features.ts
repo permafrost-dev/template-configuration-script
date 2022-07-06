@@ -33,7 +33,7 @@ export class OptionalFeatures {
     automerge = {
         prompt: 'Automerge Dependabot PRs?',
         enabled: true,
-        dependsOn: [ 'dependabot' ],
+        dependsOn: ['dependabot'],
         disable: () => {
             safeUnlink(getWorkflowFilename('dependabot-auto-merge'));
         },
@@ -75,14 +75,7 @@ export class OptionalFeatures {
         },
     };
 
-    features = [
-        this.codecov,
-        this.dependabot,
-        this.automerge,
-        this.codeql,
-        this.updateChangelog,
-        this.useMadgePackage
-    ];
+    features = [this.codecov, this.dependabot, this.automerge, this.codeql, this.updateChangelog, this.useMadgePackage];
 
     async run() {
         for (const feature of this.features) {

@@ -73,10 +73,7 @@ export const askQuestion = async (prompt, defaultValue = ''): Promise<any> => {
 
 export const askBooleanQuestion = async str => {
     const resultStr: any = await askQuestion(`${str} `);
-    const result = resultStr.toString().toLowerCase()
-        .replace(/ /g, '')
-        .replace(/[^yn]/g, '')
-        .slice(0, 1);
+    const result = resultStr.toString().toLowerCase().replace(/ /g, '').replace(/[^yn]/g, '').slice(0, 1);
 
     return result === 'y';
 };
