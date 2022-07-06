@@ -15,7 +15,7 @@ export class OptionalFeatures {
             const testsWorkflowFn = getWorkflowFilename('run-tests');
             const contents = fs.readFileSync(testsWorkflowFn, { encoding: 'utf-8' });
 
-            fs.writeFileSync(testsWorkflowFn, contents.replace('USE_CODECOV_SERVICE: yes', 'USE_CODECOV_SERVICE: no'), {encoding: 'utf-8',});
+            fs.writeFileSync(testsWorkflowFn, contents.replace('USE_CODECOV_SERVICE: yes', 'USE_CODECOV_SERVICE: no'), { encoding: 'utf-8' });
             safeUnlink(getGithubConfigFilename('codecov'));
         },
     };
