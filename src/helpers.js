@@ -13,9 +13,14 @@ export const runCommand = str => {
 };
 
 export const gitCommand = command => {
-    return cp.execSync(`git ${command}`, {
-        env: process.env, cwd: __dirname, encoding: 'utf-8', stdio: 'pipe' 
-    }) || '';
+    return (
+        cp.execSync(`git ${command}`, {
+            env: process.env,
+            cwd: __dirname,
+            encoding: 'utf-8',
+            stdio: 'pipe',
+        }) || ''
+    );
 };
 
 export const installDependencies = () => {
@@ -49,7 +54,7 @@ export function is_file(path) {
 }
 
 export function dedent(templ, ...values) {
-    let strings = Array.from(typeof templ === 'string' ? [ templ ] : templ);
+    let strings = Array.from(typeof templ === 'string' ? [templ] : templ);
     strings[strings.length - 1] = strings[strings.length - 1].replace(/\r?\n([\t ]*)$/, '');
     const indentLengths = strings.reduce((arr, str) => {
         const matches = str.match(/\n([\t ]+|(?!\s).)/g);
@@ -104,10 +109,7 @@ export const askQuestion = async (prompt, defaultValue = '') => {
 
 export const askBooleanQuestion = async str => {
     const resultStr = await askQuestion(`${str} `);
-    const result = resultStr.toString().toLowerCase()
-        .replace(/ /g, '')
-        .replace(/[^yn]/g, '')
-        .slice(0, 1);
+    const result = resultStr.toString().toLowerCase().replace(/ /g, '').replace(/[^yn]/g, '').slice(0, 1);
 
     return result === 'y';
 };

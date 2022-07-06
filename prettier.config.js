@@ -2,7 +2,7 @@
 const overrides = {
     overrides: [
         {
-            files: [ '*.yml', '*.yaml' ],
+            files: ['*.yml', '*.yaml'],
             options: { tabWidth: 2 },
         },
         {

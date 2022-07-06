@@ -5,8 +5,7 @@ export class FileVariableReplacer {
         let content = readFileSync(filename, { encoding: 'utf-8' }).toString();
         const originalContent = content.slice();
 
-        const thisYear = new Date().getFullYear()
-            .toString();
+        const thisYear = new Date().getFullYear().toString();
 
         content = content
             .replace(/package-skeleton/g, packageInfo.name)
