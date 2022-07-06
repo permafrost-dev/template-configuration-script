@@ -1,4 +1,4 @@
-import { runCommand, askBooleanQuestion } from './helpers';
+import { askBooleanQuestion, runCommand } from './helpers';
 
 const fs = require('fs');
 
@@ -15,9 +15,7 @@ export class OptionalFeatures {
             const testsWorkflowFn = getWorkflowFilename('run-tests');
             const contents = fs.readFileSync(testsWorkflowFn, { encoding: 'utf-8' });
 
-            fs.writeFileSync(testsWorkflowFn, contents.replace('USE_CODECOV_SERVICE: yes', 'USE_CODECOV_SERVICE: no'), {
-                encoding: 'utf-8',
-            });
+            fs.writeFileSync(testsWorkflowFn, contents.replace('USE_CODECOV_SERVICE: yes', 'USE_CODECOV_SERVICE: no'), {encoding: 'utf-8',});
             safeUnlink(getGithubConfigFilename('codecov'));
         },
     };
@@ -35,7 +33,7 @@ export class OptionalFeatures {
     automerge = {
         prompt: 'Automerge Dependabot PRs?',
         enabled: true,
-        dependsOn: ['dependabot'],
+        dependsOn: [ 'dependabot' ],
         disable: () => {
             safeUnlink(getWorkflowFilename('dependabot-auto-merge'));
         },
@@ -77,12 +75,19 @@ export class OptionalFeatures {
         },
     };
 
-    features = [this.codecov, this.dependabot, this.automerge, this.codeql, this.updateChangelog, this.useMadgePackage];
+    features = [
+        this.codecov,
+        this.dependabot,
+        this.automerge,
+        this.codeql,
+        this.updateChangelog,
+        this.useMadgePackage
+    ];
 
     async run() {
-        for (let feature of this.features) {
+        for (const feature of this.features) {
             if (feature.enabled) {
-                feature.enabled = await askBooleanQuestion(feature.prompt, feature.default);
+                feature.enabled = await askBooleanQuestion(feature.prompt);
             }
 
             if (!feature.enabled) {

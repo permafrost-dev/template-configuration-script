@@ -1,4 +1,4 @@
-import { runCommand, askQuestion, askBooleanQuestion } from './helpers';
+import { askBooleanQuestion, askQuestion, runCommand } from './helpers';
 
 const cp = require('child_process');
 const fs = require('fs');
@@ -46,7 +46,7 @@ export class OptionalPackages {
         dependsOn: [],
         name: 'dotenv',
         add: () => {
-            runCommand('npm', ['install', 'dotenv'], { cwd: __dirname, stdio: 'inherit' });
+            runCommand('npm install dotenv');
 
             fs.mkdirSync(`${__dirname}/dist`, { recursive: true });
             fs.writeFileSync(`${__dirname}/dist/.env`, 'TEST_VALUE=1\n', { encoding: 'utf-8' });
@@ -71,17 +71,17 @@ export class OptionalPackages {
         },
     };
 
-    optionalPackages = [this.config, this.dotenv];
+    optionalPackages = [ this.config, this.dotenv ];
 
     async run() {
-        for (let pkg of this.optionalPackages) {
-            const result = await askBooleanQuestion(pkg.prompt, pkg.default);
+        for (const pkg of this.optionalPackages) {
+            const result = await askBooleanQuestion(pkg.prompt);
             if (result) {
                 pkg.add();
             }
         }
 
-        const packageList = await askQuestion(this.otherPackages, this.otherPackages.default);
+        const packageList: any = await askQuestion(this.otherPackages, this.otherPackages.default);
 
         if (packageList.length > 0) {
             this.otherPackages.add(packageList.split(',').map(pkg => pkg.trim()));

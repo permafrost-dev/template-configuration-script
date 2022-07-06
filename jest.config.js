@@ -11,23 +11,25 @@ module.exports = {
     testEnvironment: 'node',
     transform: { '^.+\\.tsx?$': 'ts-jest' },
     testRegex: '(/__test__/.*|/tests/.*|(\\.|/)(test|spec))\\.[tj]sx?$',
-    testPathIgnorePatterns: [ '/node_modules/', '/dist/' ],
-    moduleFileExtensions: [
-        'ts',
-        'tsx',
-        'js',
-        'jsx',
-        'json'
+    testPathIgnorePatterns: [
+        '/build/',
+        '/dist/',
+        '/node_modules/',
+        '/scripts/'
     ],
+    moduleFileExtensions: [ 'ts', 'js' ],
     moduleNameMapper: pathsToModuleNameMapper(tsConfigPaths, { prefix: `${__dirname}/` }),
 
     coverageDirectory: './coverage',
-    coverageReporters: [ 'html', 'text' ],
+    coverageReporters: [ 'text', 'json' ],
     collectCoverageFrom: [
+        'src/*.{ts,js}',
         'src/**/*.{ts,js}',
-        '!**/node_modules/**',
-        '!**/vendor/**',
+        '!**/.husky/**',
         '!**/dist/**',
-        '!**/tests/**'
+        '!**/node_modules/**',
+        '!**/scripts/**',
+        '!**/tests/**',
+        '!**/vendor/**',
     ],
 };

@@ -5,7 +5,7 @@
  * ---
  */
 
-import { initReadlineQuestionPromise, askQuestion, runCommand, gitCommand, installDependencies } from './helpers';
+import { askQuestion, gitCommand, initReadlineQuestionPromise, installDependencies, runCommand } from './helpers';
 
 import { OptionalFeatures } from './Features';
 import { OptionalPackages } from './OptionalPackages';
@@ -40,7 +40,7 @@ const conditionalAsk = async (obj, propName, onlyEmpty, prompt, allowEmpty = fal
         }
     }
 
-    return new Promise(resolve => resolve());
+    return new Promise(resolve => resolve(true));
 };
 
 const populatePackageInfo = async (onlyEmpty = false) => {
@@ -114,6 +114,7 @@ const run = async function () {
         runCommand('git add .');
         runCommand('git commit -m"commit configured package files"');
     } catch (err) {
+        // @ts-ignore
         console.log(err.message);
     }
 };
