@@ -9,7 +9,8 @@
 <img alt="License" src="https://shields.io/github/license/permafrost-dev/template-configuration-script" />
 <img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/permafrost-dev/template-configuration-script" />
 <br>
-<img src="https://www.codefactor.io/repository/github/permafrost-dev/template-configuration-script/badge" alt="CodeFactor" />
+<!--<img src="https://www.codefactor.io/repository/github/permafrost-dev/template-configuration-script/badge" alt="CodeFactor" />-->
+<img alt="CodeFactor Grade" src="https://img.shields.io/codefactor/grade/github/permafrost-dev/template-configuration-script?logo=codefactor" />
 <img alt="Code Climate maintainability" src="https://img.shields.io/codeclimate/maintainability-percentage/permafrost-dev/template-configuration-script?logo=codeclimate" />
 <img alt="Code Climate technical debt" src="https://img.shields.io/codeclimate/tech-debt/permafrost-dev/template-configuration-script?label=tech%20debt&logo=codeclimate" />
 </p>
