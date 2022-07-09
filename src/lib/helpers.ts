@@ -189,7 +189,7 @@ export function dotset(object: Record<string, any>, path: string, value: any) {
 }
 
 export function isEmpty(value: any): boolean {
-    return [ undefined, null, '' ].includes(value);
+    return [undefined, null, ''].includes(value);
 }
 
 export const readfile = (filename: string) => readFileSync(filename, { encoding: 'utf-8' });
@@ -205,6 +205,5 @@ export const githubWorkflowFilename = name => `${__dirname}/.github/workflows/${
 export const githubConfigFilename = name => `${__dirname}/.github/${name}.yml`;
 
 export const hashString = (str: string) => {
-    return createHash('sha256', { encoding: 'utf-8' }).update(str)
-        .digest('hex');
+    return createHash('sha256', { encoding: 'utf-8' }).update(str).digest('hex');
 };

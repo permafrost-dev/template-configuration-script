@@ -10,9 +10,7 @@ export enum GithubUserType {
 
 export class GitUtils {
     static get githubUser(): string {
-        return gitCommand('config remote.origin.url').trim()
-            .replace(':', '/')
-            .split('/')[1];
+        return gitCommand('config remote.origin.url').trim().replace(':', '/').split('/')[1];
     }
 
     static async githubOwnerName() {

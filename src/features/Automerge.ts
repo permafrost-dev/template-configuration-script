@@ -8,7 +8,7 @@ export class Automerge extends Feature {
     enabled = true;
     result = false;
     default = true;
-    dependsOn = [ 'dependabot' ];
+    dependsOn = ['dependabot'];
 
     disable(script: Script) {
         safeUnlink(script.repository.workflowFile('dependabot-auto-merge'));
