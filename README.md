@@ -4,6 +4,16 @@
 
 # template-configuration-script
 
+<p align="center" style="flex">
+<img alt="Tests" src="https://github.com/permafrost-dev/template-configuration-script/actions/workflows/run-tests.yml/badge.svg?branch=main" />
+<img alt="License" src="https://shields.io/github/license/permafrost-dev/template-configuration-script" />
+<img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/permafrost-dev/template-configuration-script" />
+<br>
+<img src="https://www.codefactor.io/repository/github/permafrost-dev/template-configuration-script/badge" alt="CodeFactor" />
+<img alt="Code Climate maintainability" src="https://img.shields.io/codeclimate/maintainability-percentage/permafrost-dev/template-configuration-script?logo=codeclimate" />
+<img alt="Code Climate technical debt" src="https://img.shields.io/codeclimate/tech-debt/permafrost-dev/template-configuration-script?label=tech%20debt&logo=codeclimate" />
+</p>
+
 Script included in [Permafrost Software](https://github.com/permafrost-dev) template repositories for customization.
 
 Some of the optional features included in this script are:
