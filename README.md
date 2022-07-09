@@ -1,3 +1,7 @@
+<p align="center">
+    <img style="height: 130px;" src="https://user-images.githubusercontent.com/5508707/178102899-d8a0d8ec-6126-4969-8dae-763c7d0b22ba.png" alt="" />
+</p>
+
 # template-configuration-script
 
 Script included in [Permafrost Software](https://github.com/permafrost-dev) template repositories for customization.
