@@ -17,14 +17,7 @@ export class Features {
     updateChangelog = new UpdateChangelog(this.getFeatures);
     useMadgePackage = new Madge(this.getFeatures);
 
-    features: Feature[] = [
-        this.codecov,
-        this.dependabot,
-        this.automerge,
-        this.codeql,
-        this.updateChangelog,
-        this.useMadgePackage
-    ];
+    features: Feature[] = [this.codecov, this.dependabot, this.automerge, this.codeql, this.updateChangelog, this.useMadgePackage];
 
     async run(script: Script) {
         for (const feature of this.features) {
