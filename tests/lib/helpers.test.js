@@ -72,7 +72,7 @@ it('checks if a value is an object', () => {
 
 it('returns an array of segments from a dot-notation string', () => {
     const path = 'a.b.c';
-    const expected = [ 'a', 'b', 'c' ];
+    const expected = ['a', 'b', 'c'];
     const actual = getPathSegments(path);
     expect(actual).toEqual(expected);
 });
