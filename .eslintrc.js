@@ -28,7 +28,7 @@ module.exports = {
         'eslint:recommended',
         'plugin:@typescript-eslint/recommended',
         'plugin:jest/recommended',
-        'plugin:node/recommended'
+        'plugin:node/recommended' 
     ],
     rules: {
         '@typescript-eslint/ban-ts-comment': 'off',
@@ -39,29 +39,30 @@ module.exports = {
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/no-inferrable-types': 'off',
         '@typescript-eslint/no-var-requires': 'off',
+        'array-bracket-newline': [ 'warn', { multiline: true, minItems: 6 }],
+        'array-bracket-spacing': [ 'warn', 'always', { objectsInArrays: false }],
+        'array-element-newline': [ 'warn', { multiline: true, minItems: 6 }],
+        'eqeqeq': [ 'error', 'smart' ],
+        'indent': [ 'warn', 4, { SwitchCase: 1 }],
         'jest/no-disabled-tests': 'warn',
         'jest/no-identical-title': 'error',
         'newline-per-chained-call': [ 'warn', { ignoreChainWithDepth: 2 }],
+        'no-eval': 'error',
+        'no-var': 'error',
         'node/no-missing-import': 'off',
         'node/no-process-exit': 'off',
         'node/no-unpublished-require': 'off',
         'node/no-unsupported-features/es-syntax': 'off',
-        'array-bracket-newline': [ 'warn', { multiline: true, minItems: 4 }],
-        'array-bracket-spacing': [ 'warn', 'always', { objectsInArrays: false }],
-        'array-element-newline': [ 'warn', { multiline: true, minItems: 3 }],
-        'eqeqeq': [ 'error', 'smart' ],
-        'indent': [ 'warn', 4, { SwitchCase: 1 }],
-        'no-eval': 'error',
-        'no-var': 'error',
         'object-curly-newline': [ 'warn', { ObjectExpression: { multiline: true, minProperties: 4 }, ObjectPattern: { multiline: true, minProperties: 4 }, ImportDeclaration: 'never' },],
         'sort-imports': [
             'warn',
             {
+                ignoreCase: true,
                 memberSyntaxSortOrder: [
-                    'multiple',
-                    'single',
                     'none',
-                    'all'
+                    'all',
+                    'multiple',
+                    'single' 
                 ],
             },
         ],

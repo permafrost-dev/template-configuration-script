@@ -4,117 +4,132 @@
  * configures a package created from the template.
  * ---
  */
+import { gitCommand } from './helpers';
+import { Script } from './Script';
 
-import { askQuestion, gitCommand, initReadlineQuestionPromise, installDependencies, runCommand } from './helpers';
+async function main() {
+    const script = new Script();
+    await script.run();
+    console.log('done');
+    // eslint-disable-next-line no-process-exit
+    process.exit(0);
+}
 
-import { OptionalFeatures } from './Features';
-import { OptionalPackages } from './OptionalPackages';
-import { packageInfo } from './PackageInfo';
-import { DirectoryProcessor } from './DirectoryProcessor';
+if (process.cwd().endsWith('dist')) {
+    process.chdir(`${__dirname}/..`);
+}
 
-const fs = require('fs');
-const readline = require('readline');
-const { basename } = require('path');
+main();
 
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-});
+// import { askQuestion, gitCommand, initReadlineQuestionPromise, installDependencies, runCommand } from './helpers';
+// import { DirectoryProcessor } from './DirectoryProcessor';
+// import { OptionalFeatures } from './Features';
+// import { OptionalPackages } from './OptionalPackages';
+// import { packageInfo } from './PackageInfo';
 
-initReadlineQuestionPromise(rl);
+// const fs = require('fs');
+// const readline = require('readline');
+// const { basename } = require('path');
 
-const conditionalAsk = async (obj, propName, onlyEmpty, prompt, allowEmpty = false, alwaysAsk = true) => {
-    const value = obj[propName];
+// const rl = readline.createInterface({
+//     input: process.stdin,
+//     output: process.stdout,
+// });
 
-    if (!onlyEmpty || !value.length || alwaysAsk) {
-        while (obj[propName].length === 0 || alwaysAsk) {
-            obj[propName] = await askQuestion(prompt, value);
+// initReadlineQuestionPromise(rl);
 
-            if (allowEmpty && obj[propName].length === 0) {
-                break;
-            }
+// const conditionalAsk = async (obj, propName, onlyEmpty, prompt, allowEmpty = false, alwaysAsk = true) => {
+//     const value = obj[propName];
 
-            if (obj[propName].length > 0) {
-                break;
-            }
-        }
-    }
+//     if (!onlyEmpty || !value.length || alwaysAsk) {
+//         while (obj[propName].length === 0 || alwaysAsk) {
+//             obj[propName] = await askQuestion(prompt, value);
 
-    return new Promise(resolve => resolve(true));
-};
+//             if (allowEmpty && obj[propName].length === 0) {
+//                 break;
+//             }
 
-const populatePackageInfo = async (onlyEmpty = false) => {
-    const remoteUrlParts = gitCommand('config remote.origin.url').trim().replace(':', '/').split('/');
+//             if (obj[propName].length > 0) {
+//                 break;
+//             }
+//         }
+//     }
 
-    console.log();
+//     return new Promise(resolve => resolve(true));
+// };
 
-    packageInfo.name = basename(__dirname);
-    packageInfo.author.name = gitCommand('config user.name').trim();
-    packageInfo.author.email = gitCommand('config user.email').trim();
-    packageInfo.vendor.name = packageInfo.author.name;
-    packageInfo.author.github = remoteUrlParts[1];
-    packageInfo.vendor.github = remoteUrlParts[1];
+// const populatePackageInfo = async (onlyEmpty = false) => {
+//     const remoteUrlParts = gitCommand('config remote.origin.url').trim().replace(':', '/').split('/');
 
-    await conditionalAsk(packageInfo, 'name', onlyEmpty, 'package name?', false);
-    await conditionalAsk(packageInfo, 'description', onlyEmpty, 'package description?');
-    await conditionalAsk(packageInfo.author, 'name', onlyEmpty, 'author name?');
-    await conditionalAsk(packageInfo.author, 'email', onlyEmpty, 'author email?');
-    await conditionalAsk(packageInfo.author, 'github', onlyEmpty, 'author github username?');
-    await conditionalAsk(packageInfo.vendor, 'name', onlyEmpty, 'vendor name (default is author name)?', true);
-    await conditionalAsk(packageInfo.vendor, 'github', onlyEmpty, 'vendor github org/user name (default is author github)?', true);
+//     console.log();
 
-    if (packageInfo.vendor.name.length === 0) {
-        packageInfo.vendor.name = packageInfo.author.name;
-    }
+//     packageInfo.name = basename(__dirname);
+//     packageInfo.author.name = gitCommand('config user.name').trim();
+//     packageInfo.author.email = gitCommand('config user.email').trim();
+//     packageInfo.vendor.name = packageInfo.author.name;
+//     packageInfo.author.github = remoteUrlParts[1];
+//     packageInfo.vendor.github = remoteUrlParts[1];
 
-    if (packageInfo.vendor.github.length === 0) {
-        packageInfo.vendor.github = packageInfo.author.github;
-    }
-};
+//     await conditionalAsk(packageInfo, 'name', onlyEmpty, 'package name?', false);
+//     await conditionalAsk(packageInfo, 'description', onlyEmpty, 'package description?');
+//     await conditionalAsk(packageInfo.author, 'name', onlyEmpty, 'author name?');
+//     await conditionalAsk(packageInfo.author, 'email', onlyEmpty, 'author email?');
+//     await conditionalAsk(packageInfo.author, 'github', onlyEmpty, 'author github username?');
+//     await conditionalAsk(packageInfo.vendor, 'name', onlyEmpty, 'vendor name (default is author name)?', true);
+//     await conditionalAsk(packageInfo.vendor, 'github', onlyEmpty, 'vendor github org/user name (default is author github)?', true);
 
-const run = async function () {
-    await populatePackageInfo();
-    await new OptionalFeatures().run();
+//     if (packageInfo.vendor.name.length === 0) {
+//         packageInfo.vendor.name = packageInfo.author.name;
+//     }
 
-    const confirm = (await askQuestion('Process files (this will modify files)? '))
-        .toString()
-        .toLowerCase()
-        .replace(/ /g, '')
-        .replace(/[^yn]/g, '')
-        .slice(0, 1);
+//     if (packageInfo.vendor.github.length === 0) {
+//         packageInfo.vendor.github = packageInfo.author.github;
+//     }
+// };
 
-    if (confirm !== 'y') {
-        console.log('Not processing files: action canceled.  Exiting.');
-        rl.close();
-        return;
-    }
+// const run = async function () {
+//     await populatePackageInfo();
+//     await new OptionalFeatures().run();
 
-    try {
-        DirectoryProcessor.execute(__dirname, packageInfo);
-        installDependencies();
-        await new OptionalPackages().run();
-    } catch (err) {
-        //
-    }
+//     const confirm = (await askQuestion('Process files (this will modify files)? '))
+//         .toString()
+//         .toLowerCase()
+//         .replace(/ /g, '')
+//         .replace(/[^yn]/g, '')
+//         .slice(0, 1);
 
-    rl.close();
+//     if (confirm !== 'y') {
+//         console.log('Not processing files: action canceled.  Exiting.');
+//         rl.close();
+//         return;
+//     }
 
-    try {
-        console.log('Done, removing this script.');
-        if (fs.existsSync(__filename)) {
-            fs.unlinkSync(__filename);
-        }
-    } catch (err) {
-        //
-    }
+//     try {
+//         DirectoryProcessor.execute(__dirname, packageInfo);
+//         installDependencies();
+//         await new OptionalPackages().run();
+//     } catch (err) {
+//         //
+//     }
 
-    try {
-        runCommand('git add .');
-        runCommand('git commit -m"commit configured package files"');
-    } catch (err) {
-        // @ts-ignore
-        console.log(err.message);
-    }
-};
+//     rl.close();
 
-run();
+//     try {
+//         console.log('Done, removing this script.');
+//         if (fs.existsSync(__filename)) {
+//             fs.unlinkSync(__filename);
+//         }
+//     } catch (err) {
+//         //
+//     }
+
+//     try {
+//         runCommand('git add .');
+//         runCommand('git commit -m"commit configured package files"');
+//     } catch (err) {
+//         // @ts-ignore
+//         console.log(err.message);
+//     }
+// };
+
+// run();

@@ -48,9 +48,11 @@ class Builder {
             },
             entryPoints: [ buildConfig.entry ],
             format: buildConfig.format,
+            minifySyntax: true,
             logLevel: 'silent',
             metafile: true,
             minify: buildConfig.minify,
+            treeShaking: true,
             outdir: buildConfig.outdir,
             platform: buildConfig.platform.name,
             plugins: [
