@@ -1,12 +1,11 @@
-import { Features } from '@/features/Features';
 import { Script } from '@/Script';
 
 export abstract class Feature {
     public script!: Script;
-    public features: Features;
+    public features: () => Feature[];
 
-    constructor(features: Features) {
-        this.features = features;
+    constructor(getFeatures: () => Feature[]) {
+        this.features = getFeatures;
     }
 
     public name!: string;
@@ -18,7 +17,7 @@ export abstract class Feature {
     public abstract disable(script: Script);
 
     public dependents(): Feature[] {
-        return this.features.features.filter(feature => feature.dependsOn.includes(this.name));
+        return this.features().filter(feature => feature.dependsOn.includes(this.name));
     }
 
     public disableDependents(script: Script): void {
@@ -30,7 +29,7 @@ export abstract class Feature {
 
     public isEnabled() {
         for (const featureName of this.dependsOn) {
-            const feature = this.features.features.find(f => f.name === featureName);
+            const feature = this.features().find(f => f.name === featureName);
 
             if (feature && !feature.result) {
                 return false;

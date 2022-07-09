@@ -8,14 +8,23 @@ import { Script } from '@/Script';
 import { UpdateChangelog } from '@/features/UpdateChangelog';
 
 export class Features {
-    codecov = new Codecov(this);
-    codeql = new CodeQl(this);
-    dependabot = new Dependabot(this);
-    automerge = new Automerge(this);
-    updateChangelog = new UpdateChangelog(this);
-    useMadgePackage = new Madge(this);
+    getFeatures: () => Feature[] = () => this.features;
 
-    features: Feature[] = [this.codecov, this.dependabot, this.automerge, this.codeql, this.updateChangelog, this.useMadgePackage];
+    codecov = new Codecov(this.getFeatures);
+    codeql = new CodeQl(this.getFeatures);
+    dependabot = new Dependabot(this.getFeatures);
+    automerge = new Automerge(this.getFeatures);
+    updateChangelog = new UpdateChangelog(this.getFeatures);
+    useMadgePackage = new Madge(this.getFeatures);
+
+    features: Feature[] = [
+        this.codecov,
+        this.dependabot,
+        this.automerge,
+        this.codeql,
+        this.updateChangelog,
+        this.useMadgePackage
+    ];
 
     async run(script: Script) {
         for (const feature of this.features) {

@@ -1,4 +1,4 @@
-import { runCommand, safeUnlink, writefile } from '@/helpers';
+import { runCommand, safeUnlink, writefile } from '@/lib/helpers';
 import { Feature } from '@/features/Feature';
 import { Script } from '@/Script';
 

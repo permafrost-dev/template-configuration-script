@@ -1,5 +1,5 @@
 import { Feature } from '@/features/Feature';
-import { githubWorkflowFilename, safeUnlink } from '@/helpers';
+import { githubWorkflowFilename, safeUnlink } from '@/lib/helpers';
 import { Script } from '@/Script';
 
 export class CodeQl extends Feature {

@@ -1,5 +1,5 @@
 import { Feature } from '@/features/Feature';
-import { safeUnlink } from '@/helpers';
+import { safeUnlink } from '@/lib/helpers';
 import { Script } from '@/Script';
 
 export class Dependabot extends Feature {

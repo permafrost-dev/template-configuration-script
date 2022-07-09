@@ -1,6 +1,6 @@
 /* eslint-disable sort-keys */
 
-import { replaceFileString, safeUnlink } from '@/helpers';
+import { replaceFileString, safeUnlink } from '@/lib/helpers';
 import { Feature } from '@/features/Feature';
 import { Script } from '@/Script';
 
