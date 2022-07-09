@@ -1,10 +1,17 @@
 # template-configuration-script
 
-Configuration script used by [Permafrost Software](https://github.com/permafrost-dev) template repositories.
+Script included in [Permafrost Software](https://github.com/permafrost-dev) template repositories for customization.
+
+Some of the optional features included in this script are:
+
+- Use of the [codecov.io](https://codecov.io) service to report coverage.
+- Use of Dependabot to automatically update dependencies.
+- Automatically merging Dependabot pull requests.
+- Use of CodeQL to analyze code quality.
 
 ---
 
-## Usage
+## Description
 
 The compiled script prompts the user for some configuration options, which are used to replace the placeholders in several files.
 
