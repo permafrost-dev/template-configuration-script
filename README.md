@@ -4,14 +4,25 @@ Configuration script used by [Permafrost Software](https://github.com/permafrost
 
 ---
 
+## Usage
+
+The compiled script prompts the user for some configuration options, which are used to replace the placeholders in several files.
+
+- project name;
+- project description;
+- name, email and github username of the author;
+- name and github username of the project's owner/organization;
+
+The default values for the configuration prompts are intelligently guessed using several sources, such as the local git configuration and the GitHub API.
 
 ## Setup
 
 ```bash
 npm install
-
-npm run build:dev
+npm run build
 ```
+
+This will generate the compiled script in `dist/configure-template.js`.
 
 ## Testing
 
