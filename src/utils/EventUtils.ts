@@ -1,4 +1,4 @@
-import { GithubApiClient } from './lib/GithubApiClient';
+import { GithubApiClient } from '@/lib/GithubApiClient';
 
 export type Events = Event[];
 
