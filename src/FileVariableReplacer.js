@@ -1,11 +1,10 @@
-const { readFileSync, writeFileSync } = require('fs');
+import { hashString, readfile, writefile } from '@/helpers';
 
 export class FileVariableReplacer {
     static execute(filename, packageInfo) {
-        let content = readFileSync(filename, { encoding: 'utf-8' }).toString();
-        const originalContent = content.slice();
-
-        const thisYear = new Date().getFullYear().toString();
+        let content = readfile(filename);
+        const contentHash = hashString(content);
+        const thisYear = String(new Date().getFullYear());
 
         content = content
             .replace(/package-skeleton/g, packageInfo.name)
@@ -19,8 +18,8 @@ export class FileVariableReplacer {
             .replace(/\{\{date\.year\}\}/g, thisYear)
             .replace('Template Setup: run `node configure-package.js` to configure.\n', '');
 
-        if (originalContent !== content) {
-            writeFileSync(filename, content, { encoding: 'utf-8' });
+        if (contentHash !== hashString(content)) {
+            writefile(filename, content);
         }
     }
 }

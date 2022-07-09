@@ -1,6 +1,7 @@
 const cp = require('child_process');
 const fs = require('fs');
 const util = require('util');
+import { createHash } from 'crypto';
 import { existsSync, readFileSync, unlinkSync, writeFileSync } from 'fs';
 
 let question;
@@ -202,3 +203,8 @@ export const replaceFileString = (filename: string, search: string, replacement:
 export const safeUnlink = (path: string) => existsSync(path) && is_file(path) && unlinkSync(path);
 export const githubWorkflowFilename = name => `${__dirname}/.github/workflows/${name}.yml`;
 export const githubConfigFilename = name => `${__dirname}/.github/${name}.yml`;
+
+export const hashString = (str: string) => {
+    return createHash('sha256', { encoding: 'utf-8' }).update(str)
+        .digest('hex');
+};

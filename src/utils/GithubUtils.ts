@@ -1,4 +1,4 @@
-import { GithubApiClient } from './GithubApiClient';
+import { GithubApiClient } from '../GithubApiClient';
 
 export class GithubUtils {
     static async getRepositoryDescription(owner, name) {

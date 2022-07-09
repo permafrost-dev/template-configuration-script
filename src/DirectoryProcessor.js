@@ -1,13 +1,11 @@
-import { is_dir, is_file } from './helpers';
-import { FileVariableReplacer } from './FileVariableReplacer';
+import { is_dir, is_file } from '@/helpers';
+import { FileVariableReplacer } from '@/FileVariableReplacer';
 
 const path = require('path');
 const fs = require('fs');
 
 export class DirectoryProcessor {
-    static execute(directory, packageInfo) {
-        const basePath = __dirname;
-
+    static execute(basePath, directory, packageInfo) {
         const files = fs.readdirSync(directory).filter(f => {
             return ![
                 '.',
@@ -37,7 +35,7 @@ export class DirectoryProcessor {
             console.log(`processing ${kind} ./${relativeName}`);
 
             if (isPath) {
-                DirectoryProcessor.execute(fqName, packageInfo);
+                DirectoryProcessor.execute(basePath, fqName, packageInfo);
                 return;
             }
 
@@ -45,7 +43,7 @@ export class DirectoryProcessor {
                 try {
                     FileVariableReplacer.execute(fqName, packageInfo);
                 } catch (err) {
-                    console.log(`error processing file ${relativeName}`);
+                    console.log(`Error processing file ${relativeName}`);
                 }
             }
         });

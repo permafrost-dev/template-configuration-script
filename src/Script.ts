@@ -1,15 +1,12 @@
-/* eslint-disable no-process-exit */
 import { createPackageInfo, PackageInfo } from '@/PackageInfo';
-import { basename } from 'path';
-import { GitUtils } from '@/GitUtils';
+import { existsSync, unlinkSync } from 'fs';
+import { installDependencies, runCommand, safeUnlink } from '@/helpers';
+import { DirectoryProcessor } from './DirectoryProcessor';
+import { EventSearcher } from './Events';
+import { GitUtils } from '@/utils/GitUtils';
 import { Prompts } from '@/Prompts';
 import readline from 'readline';
-import { GithubUtils } from './GithubUtils';
 import { Repository } from '@/Repository';
-import { gitCommand, installDependencies, runCommand } from './helpers';
-import { EventSearcher } from './Events';
-import { existsSync, unlinkSync } from 'fs';
-import { DirectoryProcessor } from './DirectoryProcessor';
 
 export class Script {
     public rl: readline.Interface;
@@ -66,6 +63,8 @@ export class Script {
     }
 
     async run() {
+        console.log('Retrieving github data...');
+
         await this.initPackageInfo();
         await this.populatePackageInfo();
         await this.confirmRunOrExit();
@@ -91,7 +90,7 @@ export class Script {
 
     async processRepositoryFiles() {
         try {
-            DirectoryProcessor.execute(this.repository.path, this.pkg);
+            DirectoryProcessor.execute(this.repository.path, this.repository.path, this.pkg);
             return true;
         } catch (err: any) {
             console.log(err.message);
@@ -107,9 +106,7 @@ export class Script {
     unlink() {
         try {
             console.log('Done, removing this script.');
-            if (existsSync(__filename)) {
-                unlinkSync(__filename);
-            }
+            safeUnlink(__filename);
         } catch (err: any) {
             console.log(err.message);
         }

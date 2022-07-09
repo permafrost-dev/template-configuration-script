@@ -1,5 +1,5 @@
 import { Event, Events } from './Events';
-import { getJson, RestApiResponse } from './HttpUtils';
+import { getJson, RestApiResponse } from './utils/HttpUtils';
 
 export interface Contributor {
     login: string;

@@ -48,6 +48,7 @@ module.exports = {
         'jest/no-identical-title': 'error',
         'newline-per-chained-call': [ 'warn', { ignoreChainWithDepth: 2 }],
         'no-eval': 'error',
+        'no-process-exit': 'off',
         'no-var': 'error',
         'node/no-missing-import': 'off',
         'node/no-process-exit': 'off',
