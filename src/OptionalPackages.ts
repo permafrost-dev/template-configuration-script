@@ -71,7 +71,7 @@ export class OptionalPackages {
         },
     };
 
-    optionalPackages = [ this.config, this.dotenv ];
+    optionalPackages = [this.config, this.dotenv];
 
     async run() {
         for (const pkg of this.optionalPackages) {
