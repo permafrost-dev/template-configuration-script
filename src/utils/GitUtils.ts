@@ -1,5 +1,5 @@
-import { gitCommand } from '@/helpers';
-import { GithubApiClient } from '@/GithubApiClient';
+import { gitCommand } from '@/lib/helpers';
+import { GithubApiClient } from '@/lib/GithubApiClient';
 
 export enum GithubUserType {
     Bot = 'Bot',

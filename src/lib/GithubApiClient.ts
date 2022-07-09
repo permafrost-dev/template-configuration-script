@@ -1,5 +1,5 @@
-import { Event, Events } from './Events';
-import { getJson, RestApiResponse } from './utils/HttpUtils';
+import { getJson, RestApiResponse } from '@/utils/HttpUtils';
+import { Event } from '@/utils/EventUtils';
 
 export interface Contributor {
     login: string;
@@ -54,6 +54,12 @@ export class GithubApiClient {
         return response.data.items.filter(item => item.score >= minScore);
     }
 
+    /**
+     * Return a list of contributors for a given repository.
+     * @param {string} owner - The owner of the repository.
+     * @param {string} repositoryName - The name of the repository.
+     * @returns An array of `Contributor` objects, or `null` on error.
+     */
     async contributors(owner: string, repositoryName: string): Promise<Contributor[] | null> {
         const response = await this.get(`/repos/${owner}/${repositoryName}/contributors`);
 

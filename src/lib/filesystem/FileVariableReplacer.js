@@ -1,4 +1,4 @@
-import { hashString, readfile, writefile } from '@/helpers';
+import { hashString, readfile, writefile } from '@/lib/helpers';
 
 export class FileVariableReplacer {
     static execute(filename, packageInfo) {

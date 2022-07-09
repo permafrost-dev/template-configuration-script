@@ -1,5 +1,5 @@
-import { GithubUtils } from './utils/GithubUtils';
-import { GitUtils } from './utils/GitUtils';
+import { GithubUtils } from '@/utils/GithubUtils';
+import { GitUtils } from '@/utils/GitUtils';
 
 export class Repository {
     public name: string;

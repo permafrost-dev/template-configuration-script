@@ -1,12 +1,11 @@
-import { createPackageInfo, PackageInfo } from '@/PackageInfo';
-import { existsSync, unlinkSync } from 'fs';
-import { installDependencies, runCommand, safeUnlink } from '@/helpers';
-import { DirectoryProcessor } from './DirectoryProcessor';
-import { EventSearcher } from './Events';
+import { createPackageInfo, PackageInfo } from '@/lib/PackageInfo';
+import { installDependencies, runCommand, safeUnlink } from '@/lib/helpers';
+import { DirectoryProcessor } from '@/lib/filesystem/DirectoryProcessor';
+import { EventUtils } from '@/utils/EventUtils';
 import { GitUtils } from '@/utils/GitUtils';
-import { Prompts } from '@/Prompts';
+import { Prompts } from '@/lib/Prompts';
 import readline from 'readline';
-import { Repository } from '@/Repository';
+import { Repository } from '@/lib/Repository';
 
 export class Script {
     public rl: readline.Interface;
@@ -29,7 +28,7 @@ export class Script {
     }
 
     async initPackageInfo() {
-        const authorUsername = await new EventSearcher().searchRepositoryCommitsForGithubUsername(
+        const authorUsername = await new EventUtils().searchRepositoryCommitsForGithubUsername(
             GitUtils.githubUser,
             GitUtils.githubRepositoryName(),
             GitUtils.email(),

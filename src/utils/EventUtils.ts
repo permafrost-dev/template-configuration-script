@@ -1,4 +1,4 @@
-import { GithubApiClient } from './GithubApiClient';
+import { GithubApiClient } from './lib/GithubApiClient';
 
 export type Events = Event[];
 
@@ -595,7 +595,7 @@ export interface Org {
     avatar_url: string;
 }
 
-export class EventSearcher {
+export class EventUtils {
     async repositoryEvents(owner: string, name: string): Promise<Event[]> {
         const client = new GithubApiClient();
         const data = await client.repositoryEvents(owner, name);

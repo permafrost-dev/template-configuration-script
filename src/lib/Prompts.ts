@@ -1,4 +1,4 @@
-import { booleanToString, dotget, dotset, isEmpty, yn } from '@/helpers';
+import { booleanToString, dotget, dotset, isEmpty, yn } from '@/lib/helpers';
 import { promisify } from 'util';
 
 export class Prompts {
@@ -60,5 +60,3 @@ export class Prompts {
         return dotget(obj, path);
     }
 }
-
-// export const prompts = new Prompts();

@@ -1,5 +1,5 @@
-import { is_dir, is_file } from '@/helpers';
-import { FileVariableReplacer } from '@/FileVariableReplacer';
+import { is_dir, is_file } from '@/lib/helpers';
+import { FileVariableReplacer } from '@/lib/filesystem/FileVariableReplacer';
 
 const path = require('path');
 const fs = require('fs');
