@@ -48,12 +48,12 @@ class Builder {
             },
             entryPoints: [ buildConfig.entry ],
             format: buildConfig.format,
-            minifySyntax: true,
             logLevel: 'silent',
             metafile: true,
             minify: buildConfig.minify,
-            treeShaking: true,
-            outdir: buildConfig.outdir,
+            minifySyntax: false,
+            //outdir: buildConfig.outdir,
+            outfile: `${buildConfig.outdir}/configure-template.js`,
             platform: buildConfig.platform.name,
             plugins: [
                 esbuildPluginDecorator({
@@ -62,6 +62,7 @@ class Builder {
                 }),
             ],
             target: `${buildConfig.platform.name}${buildConfig.platform.version}`,
+            treeShaking: true,
         });
 
         return new Promise(resolve => resolve(result));
@@ -100,12 +101,12 @@ class Builder {
 
     convertToProductionFile() {
         const filename = basename(buildConfig.entry).replace(/\.ts$/, '.js');
-        const newFilename = pkg.name;
+        const newFilename = pkg.main;
         const contents = readFileSync(`${buildConfig.outdir}/${filename}`, { encoding: 'utf-8' });
 
         spawnSync('chmod', [ '+x', `${buildConfig.outdir}/${filename}` ], { stdio: 'ignore' });
         writeFileSync(`${buildConfig.outdir}/${filename}`, `#!/usr/bin/node\n\n${contents}`, { encoding: 'utf-8' });
-        renameSync(`${buildConfig.outdir}/${filename}`, `${buildConfig.outdir}/${newFilename}`);
+        renameSync(`${buildConfig.outdir}/${filename}`, `${newFilename}`);
     }
 
     async run() {
