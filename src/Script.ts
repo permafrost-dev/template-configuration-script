@@ -1,11 +1,13 @@
 import { createPackageInfo, PackageInfo } from '@/lib/PackageInfo';
-import { installDependencies, runCommand, safeUnlink } from '@/lib/helpers';
+import { hashString, installDependencies, runCommand, safeUnlink } from '@/lib/helpers';
 import { DirectoryProcessor } from '@/lib/filesystem/DirectoryProcessor';
 import { EventUtils } from '@/utils/EventUtils';
 import { GitUtils } from '@/utils/GitUtils';
 import { Prompts } from '@/lib/Prompts';
 import readline from 'readline';
 import { Repository } from '@/lib/Repository';
+import { getUrl } from '@/utils/HttpUtils';
+import { readFileSync, writeFileSync } from 'fs';
 
 export class Script {
     public rl: readline.Interface;
@@ -61,7 +63,39 @@ export class Script {
         }
     }
 
+    checkIfUpdateIsNeeded(downloadedHash: string) {
+        const currentHash = hashString(readFileSync(__filename, { encoding: 'utf-8' }));
+
+        console.log({ currentHash, downloadedHash });
+
+        return currentHash !== downloadedHash;
+    }
+
+    async updateWithLatestVersionFromGithub() {
+        const baseUrl = `https://raw.githubusercontent.com/permafrost-dev/template-configuration-script/main/dist`;
+        const hashResp = await getUrl(`${baseUrl}/configure-template.js.hash`);
+
+        if (hashResp.success) {
+            const needsUpdate = this.checkIfUpdateIsNeeded(hashResp.data);
+
+            console.log({ needsUpdate });
+
+            if (needsUpdate) {
+                const scriptResp = await getUrl(`${baseUrl}/configure-template.js`);
+
+                if (scriptResp.success) {
+                    writeFileSync(`${__filename}.latest.js`, scriptResp.data, { encoding: 'utf-8' });
+                    console.log('* Updated to the latest version.');
+                }
+            }
+        }
+    }
+
     async run() {
+        await this.updateWithLatestVersionFromGithub();
+        console.log('done');
+        return;
+
         console.log('Retrieving github data...');
 
         await this.initPackageInfo();
