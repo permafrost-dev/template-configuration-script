@@ -1,3 +1,4 @@
+!/dist/configure-template.js
 /.idea
 /.vscode
 /build
