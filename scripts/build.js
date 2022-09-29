@@ -1,10 +1,12 @@
 const { basename } = require('path');
 const { esbuildPluginDecorator } = require('esbuild-plugin-decorator');
 const {
-    realpathSync, readFileSync, writeFileSync, renameSync 
+    realpathSync, readFileSync, writeFileSync, renameSync, existsSync, unlinkSync, readdirSync, lstatSync 
 } = require('fs');
 const { spawnSync } = require('child_process');
 const esbuild = require('esbuild');
+const { createHash } = require('crypto');
+const { realpath } = require('fs/promises');
 
 const buildConfig = {
     basePath: `${__dirname}/..`,
@@ -21,6 +23,9 @@ const buildConfig = {
 };
 
 const pkg = require(realpathSync(`${buildConfig.basePath}/package.json`, { encoding: 'utf-8' }));
+
+const hashString = str => createHash('sha256', { encoding: 'utf-8' }).update(str)
+    .digest('hex');
 
 class Builder {
     config = {
@@ -99,6 +104,25 @@ class Builder {
             .forEach(data => (this.config[data.name] = data.value));
     }
 
+    createHashFile(filename) {
+        const hash = hashString(readFileSync(filename, { encoding: 'utf-8' }));
+        writeFileSync(`${filename}.hash`, hash, { encoding: 'utf-8' });
+    }
+
+    createHashFiles(path) {
+        const files = readdirSync(path);
+        files
+            .filter(file => file.endsWith('.js'))
+            .forEach(async file => {
+                const fullPath = (await realpath(path)) + `/${file}`;
+                if (lstatSync(fullPath).isDirectory()) {
+                    this.createHashFiles(fullPath);
+                } else {
+                    this.createHashFile(fullPath);
+                }
+            });
+    }
+
     convertToProductionFile() {
         const filename = basename(buildConfig.entry).replace(/\.ts$/, '.js');
         const newFilename = pkg.main;
@@ -107,6 +131,12 @@ class Builder {
         spawnSync('chmod', [ '+x', `${buildConfig.outdir}/${filename}` ], { stdio: 'ignore' });
         writeFileSync(`${buildConfig.outdir}/${filename}`, `#!/usr/bin/node\n\n${contents}`, { encoding: 'utf-8' });
         renameSync(`${buildConfig.outdir}/${filename}`, `${newFilename}`);
+
+        // if (existsSync(`${buildConfig.outdir}/${filename}.hash`)) {
+        //     unlinkSync(`${buildConfig.outdir}/${filename}.hash`);
+        // }
+
+        //this.createHashFile(newFilename);
     }
 
     async run() {
@@ -131,6 +161,13 @@ class Builder {
         if (this.config.production) {
             this.convertToProductionFile();
         }
+        // else {
+        //     Object.keys(results.metafile.outputs).forEach(fn => {
+        //         this.createHashFile(fn);
+        //     });
+        // }
+        // const outdir = await realpath();
+        this.createHashFiles(buildConfig.outdir);
     }
 }
 
