@@ -587,20 +587,18 @@ var Script = class {
     const hashResp = await getUrl(`${baseUrl}/configure-template.js.hash`);
     if (hashResp.success) {
       const needsUpdate = this.checkIfUpdateIsNeeded(hashResp.data);
-      console.log({ needsUpdate });
       if (needsUpdate) {
         const scriptResp = await getUrl(`${baseUrl}/configure-template.js`);
         if (scriptResp.success) {
-          (0, import_fs2.writeFileSync)(`${__filename}.latest.js`, scriptResp.data, { encoding: "utf-8" });
-          console.log("* Updated to the latest version.");
+          (0, import_fs2.writeFileSync)(`${__filename}`, scriptResp.data, { encoding: "utf-8" });
+          console.log("* Updated to the latest version, please re-run this script.");
+          process.exit(0);
         }
       }
     }
   }
   async run() {
     await this.updateWithLatestVersionFromGithub();
-    console.log("done");
-    return;
     console.log("Retrieving github data...");
     await this.initPackageInfo();
     await this.populatePackageInfo();
