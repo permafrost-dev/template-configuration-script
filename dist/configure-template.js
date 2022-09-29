@@ -583,13 +583,17 @@ var Script = class {
     return currentHash !== downloadedHash;
   }
   async updateWithLatestVersionFromGithub() {
-    const resp = await getUrl(`https://raw.githubusercontent.com/permafrost-dev/template-configuration-script/main/dist/configure-template.js.hash`);
-    if (resp.success) {
-      const needsUpdate = this.checkIfUpdateIsNeeded(resp.data);
+    const baseUrl = `https://raw.githubusercontent.com/permafrost-dev/template-configuration-script/main/dist`;
+    const hashResp = await getUrl(`${baseUrl}/configure-template.js.hash`);
+    if (hashResp.success) {
+      const needsUpdate = this.checkIfUpdateIsNeeded(hashResp.data);
       console.log({ needsUpdate });
       if (needsUpdate) {
-        (0, import_fs2.writeFileSync)(`${__filename}.latest.js`, resp.data, { encoding: "utf-8" });
-        console.log("* Updated to the latest version.");
+        const scriptResp = await getUrl(`${baseUrl}/configure-template.js`);
+        if (scriptResp.success) {
+          (0, import_fs2.writeFileSync)(`${__filename}.latest.js`, scriptResp.data, { encoding: "utf-8" });
+          console.log("* Updated to the latest version.");
+        }
       }
     }
   }
