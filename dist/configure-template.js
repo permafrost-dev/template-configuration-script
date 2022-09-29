@@ -189,14 +189,12 @@ var DirectoryProcessor = class {
         "..",
         ".editorconfig",
         ".eslintignore",
-        ".eslintrc.js",
         ".git",
         ".gitattributes",
-        ".github",
         ".gitignore",
-        ".prettier.config.js",
         ".prettierignore",
         "configure-package.js",
+        path.basename(__filename),
         "dist",
         "node_modules",
         "package-lock.json"
@@ -261,6 +259,55 @@ async function getJson(url) {
   };
   try {
     result.data = await requestJson(url);
+    result.success = true;
+    result.failed = false;
+    result.error = "";
+    result.hasError = false;
+  } catch (e) {
+    result.data = null;
+    result.success = false;
+    result.failed = true;
+    result.error = e.message;
+    result.hasError = true;
+  }
+  return result;
+}
+async function getUrl(url) {
+  const result = {
+    data: null,
+    error: "",
+    failed: false,
+    hasError: false,
+    headers: {},
+    statusCode: 0,
+    success: false
+  };
+  const requestContent = async (url2) => {
+    const options = {
+      headers: {
+        Accept: "text/plain, */*",
+        "User-Agent": "permafrost-dev-template-configure/1.0"
+      }
+    };
+    return new Promise((resolve, reject) => {
+      const req = import_https.default.get(url2, options);
+      req.on("response", async (res) => {
+        result.headers = res.headers;
+        result.statusCode = res.statusCode;
+        let body = "";
+        res.setEncoding("utf-8");
+        for await (const chunk of res) {
+          body += chunk;
+        }
+        resolve(body);
+      });
+      req.on("error", (err) => {
+        throw new err();
+      });
+    });
+  };
+  try {
+    result.data = await requestContent(url);
     result.success = true;
     result.failed = false;
     result.error = "";
@@ -483,6 +530,7 @@ var Repository = class {
 };
 
 // src/Script.ts
+var import_fs2 = require("fs");
 var Script = class {
   rl;
   pkg = createPackageInfo();
@@ -529,7 +577,26 @@ var Script = class {
       await this.prompts.conditional(this.pkg, prompt.path, prompt.prompt);
     }
   }
+  checkIfUpdateIsNeeded(downloadedHash) {
+    const currentHash = hashString((0, import_fs2.readFileSync)(__filename, { encoding: "utf-8" }));
+    console.log({ currentHash, downloadedHash });
+    return currentHash !== downloadedHash;
+  }
+  async updateWithLatestVersionFromGithub() {
+    const resp = await getUrl(`https://raw.githubusercontent.com/permafrost-dev/template-configuration-script/main/dist/configure-template.js.hash`);
+    if (resp.success) {
+      const needsUpdate = this.checkIfUpdateIsNeeded(resp.data);
+      console.log({ needsUpdate });
+      if (needsUpdate) {
+        (0, import_fs2.writeFileSync)(`${__filename}.latest.js`, resp.data, { encoding: "utf-8" });
+        console.log("* Updated to the latest version.");
+      }
+    }
+  }
   async run() {
+    await this.updateWithLatestVersionFromGithub();
+    console.log("done");
+    return;
     console.log("Retrieving github data...");
     await this.initPackageInfo();
     await this.populatePackageInfo();
