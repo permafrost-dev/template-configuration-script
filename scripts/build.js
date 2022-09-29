@@ -131,12 +131,6 @@ class Builder {
         spawnSync('chmod', [ '+x', `${buildConfig.outdir}/${filename}` ], { stdio: 'ignore' });
         writeFileSync(`${buildConfig.outdir}/${filename}`, `#!/usr/bin/node\n\n${contents}`, { encoding: 'utf-8' });
         renameSync(`${buildConfig.outdir}/${filename}`, `${newFilename}`);
-
-        // if (existsSync(`${buildConfig.outdir}/${filename}.hash`)) {
-        //     unlinkSync(`${buildConfig.outdir}/${filename}.hash`);
-        // }
-
-        //this.createHashFile(newFilename);
     }
 
     async run() {
@@ -161,12 +155,7 @@ class Builder {
         if (this.config.production) {
             this.convertToProductionFile();
         }
-        // else {
-        //     Object.keys(results.metafile.outputs).forEach(fn => {
-        //         this.createHashFile(fn);
-        //     });
-        // }
-        // const outdir = await realpath();
+
         this.createHashFiles(buildConfig.outdir);
     }
 }
